@@ -1,0 +1,54 @@
+MYSQL EXAMPLE
+
+
+1. Create mysql module folder
+In location <jboss_home>/modules create folder 'com/mysql/jdbc/main'
+
+
+2. Add driver to module folder
+Copy mysql driver to mysql module folder. For instance: mysql-connector-java-5.1.10.jar
+
+
+3. Add module.xml to module folder
+Create module.xml folder and add to mysql module folder. Example content:
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="urn:jboss:module:1.0" name="com.mysql.jdbc">
+  <resources>
+    <resource-root path="mysql-connector-java-5.1.10.jar"/>
+        <!-- Insert resources here -->
+  </resources>
+  <dependencies>
+    <module name="javax.api"/>
+    <module name="javax.transaction.api"/>
+  </dependencies>
+</module>
+
+
+4. Improve file standalone.xml
+In location <jboss_home>/standalone/configuration update file standalone.xml. For instance:
+<datasources>
+    <datasource jndi-name="java:jboss/datasources/ExampleDS" pool-name="ExampleDS" enabled="true" use-java-context="true">
+        <connection-url>jdbc:h2:mem:test;DB_CLOSE_DELAY=-1</connection-url>
+        <driver>h2</driver>
+        <security>
+            <user-name>sa</user-name>
+            <password>sa</password>
+        </security>
+    </datasource>
+    <datasource jndi-name="java:jboss/datasources/MySqlDS" pool-name="MySqlDS" enabled="true" use-java-context="true">
+        <connection-url>jdbc:mysql://localhost:3306/servlets_hib3_ejb3</connection-url>
+        <driver>mysql</driver>
+        <security>
+            <user-name>root</user-name>
+            <password>P@ssw0rd</password>
+        </security>
+    </datasource>
+    <drivers>
+        <driver name="h2" module="com.h2database.h2">
+            <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
+        </driver>
+        <driver name="mysql" module="com.mysql.jdbc">
+            <xa-datasource-class>com.mysql.jdbc.jdbc2.optional.MysqlXADataSource</xa-datasource-class>
+        </driver>
+    </drivers>
+</datasources>
