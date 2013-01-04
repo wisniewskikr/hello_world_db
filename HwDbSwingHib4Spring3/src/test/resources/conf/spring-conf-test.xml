@@ -21,17 +21,16 @@
 
     <context:annotation-config/>
 	<context:component-scan base-package="pl.kwi" />
+	<context:property-placeholder location="classpath:project-test.properties" />
 	
     
     <bean id="dataSource"
        class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-       p:url="jdbc:mysql://localhost:3306/swing_hib4_spring3_test"
-       p:driverClassName="com.mysql.jdbc.Driver"
-       p:username="root"
-       p:password="P@ssw0rd"/>      
-     <!-- bean id="dataSource" 
-    	class="org.springframework.jndi.JndiObjectFactoryBean"
-    	p:jndiName="${jdbc.jndiName}"/ -->
+       p:url="${test.db.url}"
+       p:driverClassName="${test.db.driverClassName}"
+       p:username="${test.db.username}"
+       p:password="${test.db.password}"
+     />  
     	
      
     <bean id="sessionFactory"
