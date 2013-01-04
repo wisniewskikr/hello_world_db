@@ -7,11 +7,34 @@
   <properties>
 		<spring.version>3.1.2.RELEASE</spring.version>	
 		<hibernate.version>4.1.7.Final</hibernate.version>	
+		
+		<db.url>jdbc:mysql://localhost:3306/swing_hib4_spring3</db.url>
+		<db.driverClassName>com.mysql.jdbc.Driver</db.driverClassName>
+		<db.username>root</db.username>
+		<db.password>P@ssw0rd</db.password>
+		
+		<test.db.url>jdbc:mysql://localhost:3306/swing_hib4_spring3_test</test.db.url>
+		<test.db.driverClassName>com.mysql.jdbc.Driver</test.db.driverClassName>
+		<test.db.username>root</test.db.username>
+		<test.db.password>P@ssw0rd</test.db.password>
 	</properties>
 	
 	
 	<build>
 		<finalName>${artifactId}</finalName>
+		
+		<resources>
+			<resource>
+				<directory>src/main/resources/</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources/</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
 		
 		<plugins>
 			<plugin>

@@ -21,7 +21,6 @@
 
     <context:annotation-config/>
 	<context:component-scan base-package="pl.kwi" />
-	<context:property-placeholder location="classpath:project.properties" />
 	
     
     <bean id="dataSource"
