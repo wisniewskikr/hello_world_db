@@ -1,15 +1,12 @@
 package pl.kwi.entities;
 
 import javax.persistence.Entity;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import pl.kwi.db.jpa.AbstractEntity;
 
-@NamedQuery(name="UserEntity.getAll", 
-			query="SELECT u FROM UserEntity u")
 @Entity
-@Table(name="USERS")
+@Table(name="users")
 public class UserEntity extends AbstractEntity{
 	
 	

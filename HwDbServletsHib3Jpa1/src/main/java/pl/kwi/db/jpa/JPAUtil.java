@@ -4,7 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-public class JPAUtil {
+public class JpaUtil {
 	
 	public static EntityManager createEntityManager(String persistenceUnitName){		
 		return Persistence.createEntityManagerFactory(persistenceUnitName).createEntityManager();		

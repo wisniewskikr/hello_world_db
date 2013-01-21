@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dataset>
-<USERS id="1" name="Name1"/>
-<USERS id="2" name="Name2"/>
-<USERS id="3" name="Name3"/>
+<users id="1" name="Name1"/>
+<users id="2" name="Name2"/>
+<users id="3" name="Name3"/>
 </dataset>

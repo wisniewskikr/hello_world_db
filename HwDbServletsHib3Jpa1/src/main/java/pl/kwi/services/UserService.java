@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
 import pl.kwi.daos.UserDao;
-import pl.kwi.db.jpa.JPAUtil;
+import pl.kwi.db.jpa.JpaUtil;
 import pl.kwi.entities.UserEntity;
 
 public class UserService {
@@ -18,18 +18,16 @@ public class UserService {
 	
 	public Long createUser(UserEntity user){
 		
-		Long id;
-		
-		em = JPAUtil.createEntityManager("pu");
-		transaction = JPAUtil.beginTransaction(em);
+		em = JpaUtil.createEntityManager("pu");
+		transaction = JpaUtil.beginTransaction(em);
 		
 		UserDao dao = new UserDao(em);		
-		id = dao.create(user);
+		dao.create(user);
 		
-		JPAUtil.commitTransaction(transaction);
-		JPAUtil.closeEntityManager(em);
+		JpaUtil.commitTransaction(transaction);
+		JpaUtil.closeEntityManager(em);
 		
-		return id;
+		return user.getId();
 		
 	}
 	
@@ -37,14 +35,14 @@ public class UserService {
 		
 		UserEntity entity;
 		
-		em = JPAUtil.createEntityManager("pu");
-		transaction = JPAUtil.beginTransaction(em);
+		em = JpaUtil.createEntityManager("pu");
+		transaction = JpaUtil.beginTransaction(em);
 		
 		UserDao dao = new UserDao(em);		
-		entity = dao.read(id, UserEntity.class);
+		entity = dao.read(id);
 		
-		JPAUtil.commitTransaction(transaction);
-		JPAUtil.closeEntityManager(em);
+		JpaUtil.commitTransaction(transaction);
+		JpaUtil.closeEntityManager(em);
 		
 		return entity;
 		
@@ -52,27 +50,27 @@ public class UserService {
 	
 	public void updateUser(UserEntity user){
 		
-		em = JPAUtil.createEntityManager("pu");
-		transaction = JPAUtil.beginTransaction(em);
+		em = JpaUtil.createEntityManager("pu");
+		transaction = JpaUtil.beginTransaction(em);
 		
 		UserDao dao = new UserDao(em);		
 		dao.update(user);
 		
-		JPAUtil.commitTransaction(transaction);
-		JPAUtil.closeEntityManager(em);
+		JpaUtil.commitTransaction(transaction);
+		JpaUtil.closeEntityManager(em);
 		
 	}
 	
 	public void deleteUser(UserEntity user){
 		
-		em = JPAUtil.createEntityManager("pu");
-		transaction = JPAUtil.beginTransaction(em);
+		em = JpaUtil.createEntityManager("pu");
+		transaction = JpaUtil.beginTransaction(em);
 		
 		UserDao dao = new UserDao(em);		
 		dao.delete(user);
 		
-		JPAUtil.commitTransaction(transaction);
-		JPAUtil.closeEntityManager(em);
+		JpaUtil.commitTransaction(transaction);
+		JpaUtil.closeEntityManager(em);
 		
 	}
 	
@@ -80,14 +78,14 @@ public class UserService {
 		
 		List<UserEntity> list;
 		
-		em = JPAUtil.createEntityManager("pu");
-		transaction = JPAUtil.beginTransaction(em);
+		em = JpaUtil.createEntityManager("pu");
+		transaction = JpaUtil.beginTransaction(em);
 		
 		UserDao dao = new UserDao(em);
 		list = dao.getAllUserList();
 		
-		JPAUtil.commitTransaction(transaction);
-		JPAUtil.closeEntityManager(em);
+		JpaUtil.commitTransaction(transaction);
+		JpaUtil.closeEntityManager(em);
 		
 		return list;
 		

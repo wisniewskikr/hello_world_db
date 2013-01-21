@@ -1,6 +1,11 @@
 package pl.kwi.daos;
 
+import static junit.framework.Assert.assertNotNull;
+
 import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 
 import junit.framework.Assert;
 
@@ -9,92 +14,97 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import pl.kwi.daos.UserDao;
-import pl.kwi.db.jpa.AbstractDaoTest;
+import pl.kwi.db.jpa.JpaTestUtil;
 import pl.kwi.entities.UserEntity;
 
-public class UserDaoTest extends AbstractDaoTest {
+public class UserDaoTest {
 
-	static UserDao dao;
+	private static EntityManager em;
+	private static UserDao dao;
 	
 	@BeforeClass
 	public static void setUp() throws Exception{
-		openTestConnections("pu_test");
-		dao = new UserDao(getEm());
+		em = JpaTestUtil.beginEntityManager();
+		dao = new UserDao(em);
 	}
 	
 	@AfterClass
 	public static void after(){
-		closeTestConnections();
+		JpaTestUtil.finishEntityManager(em);
 	}
 
 	@Test
 	public void create() {
 
-		executeDataFile("/dbunit/input.xml");
-		long expected = 0;
-
+		EntityTransaction tx = JpaTestUtil.beginTransaction(em);		
+		JpaTestUtil.executeDataFile("/dbunit/input.xml");
+				
 		UserEntity entity = new UserEntity();
 		entity.setName("Name4");
 		dao.create(entity);
-
-		long actual = entity.getId();
-
-		Assert.assertNotSame(expected, actual);
+		
+		JpaTestUtil.commitTransaction(tx);
+		
+		assertNotNull(entity.getId());
 
 	}
 
 	@Test
 	public void read() {
 		
-		executeDataFile("/dbunit/input.xml");
-		String expected = "Name1";
+		EntityTransaction tx = JpaTestUtil.beginTransaction(em);		
+		JpaTestUtil.executeDataFile("/dbunit/input.xml");
 		
-		long id = 1;
-		UserEntity entity = dao.read(id, UserEntity.class);
-		String actual = entity.getName();
+		UserEntity entity = dao.read(1L);
 		
-		Assert.assertEquals(expected, actual);
+		JpaTestUtil.commitTransaction(tx);
+		
+		Assert.assertEquals("Name1", entity.getName());
 
 	}
 
 	@Test
 	public void update() {
 
-		executeDataFile("/dbunit/input.xml");
-		String expected = "Name2";
+		EntityTransaction tx = JpaTestUtil.beginTransaction(em);
+		JpaTestUtil.executeDataFile("/dbunit/input.xml");
 
-		int id = 1;
-		UserEntity entity = dao.read(id, UserEntity.class);
-		entity.setName(expected);
+		UserEntity entity = dao.read(1L);
+		entity.setName("Name4");
 		dao.update(entity);
+		entity = dao.read(1L);
+		
+		JpaTestUtil.commitTransaction(tx);
 
-		entity = dao.read(id, UserEntity.class);
-		String actual = entity.getName();
-
-		Assert.assertEquals(expected, actual);
+		Assert.assertEquals("Name4", entity.getName());
 
 	}
 
 	@Test
 	public void delete() {
 		
-		executeDataFile("/dbunit/input.xml");
-		int id = 1;
+		EntityTransaction tx = JpaTestUtil.beginTransaction(em);
+		JpaTestUtil.executeDataFile("/dbunit/input.xml");
 		
-		UserEntity entity = dao.read(id, UserEntity.class);
+		UserEntity entity = dao.read(1L);
 		dao.delete(entity);
-
-		entity = dao.read(id, UserEntity.class);
+		entity = dao.read(1L);
+		
+		JpaTestUtil.commitTransaction(tx);
+		
 		Assert.assertNull(entity);
 
 	}
 	
 	@Test
-	public void getAllSimpleEntity(){
+	public void getAllUserList(){
 		
-		executeDataFile("/dbunit/input.xml");
+		EntityTransaction tx = JpaTestUtil.beginTransaction(em);
+		JpaTestUtil.executeDataFile("/dbunit/input.xml");
 		
 		List<UserEntity> list = dao.getAllUserList();
+		
+		JpaTestUtil.commitTransaction(tx);
 		
 		Assert.assertEquals(3, list.size());
 		
